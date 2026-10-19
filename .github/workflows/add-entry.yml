@@ -23,17 +23,18 @@ permissions:
 jobs:
   add-entry:
     runs-on: ubuntu-latest
+    env:
+      UPSTREAM: ${{ inputs.upstream }}
+      ANCHOR: ${{ inputs.anchor }}
+      ENTRY: ${{ inputs.entry }}
+      BRANCH: ${{ inputs.branch }}
     steps:
       - uses: actions/checkout@v4
       - name: Insert entry and push branch
         run: |
-          UPSTREAM="${{ inputs.upstream }}"
-          ANCHOR="${{ inputs.anchor }}"
-          ENTRY="${{ inputs.entry }}"
-          BRANCH="${{ inputs.branch }}"
           git fetch "https://github.com/$UPSTREAM.git" main
           git checkout -b "$BRANCH" FETCH_HEAD
-          ANCHOR="$ANCHOR" ENTRY="$ENTRY" python3 - <<'PYEOF'
+          python3 - <<'PYEOF'
           import os, sys
           anchor = os.environ["ANCHOR"]
           entry = os.environ["ENTRY"].replace("%%NL%%", "\n")
