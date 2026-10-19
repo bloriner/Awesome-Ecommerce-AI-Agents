@@ -10,7 +10,7 @@ on:
         description: Unique text on the line after which the entry will be inserted
         required: true
       entry:
-        description: Entry text to insert (use \n for line breaks)
+        description: Entry text to insert (use %%NL%% for line breaks)
         required: true
       branch:
         description: New branch name for the change
@@ -36,7 +36,7 @@ jobs:
           ANCHOR="$ANCHOR" ENTRY="$ENTRY" python3 - <<'PYEOF'
           import os, sys
           anchor = os.environ["ANCHOR"]
-          entry = os.environ["ENTRY"].replace("\\n", "\n")
+          entry = os.environ["ENTRY"].replace("%%NL%%", "\n")
           text = open("README.md").read()
           first = entry.split("\n")[0].strip()
           if first and first in text:
